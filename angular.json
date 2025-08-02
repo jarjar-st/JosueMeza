@@ -54,12 +54,15 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "JosueMeza:build:production"
             },
             "development": {
-              "buildTarget": "JosueMeza:build:development"
+              "buildTarget": "JosueMeza:build:development"          
             }
           },
           "defaultConfiguration": "development"

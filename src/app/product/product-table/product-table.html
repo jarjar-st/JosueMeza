@@ -1,1 +1,8 @@
-<p>product-table works!</p>
+
+
+@for ( product of productService.products(); track product.id ) {
+  <tr>
+    <td>{{ product.id }}</td>
+    <td>{{ product.name }}</td>
+  </tr>
+}

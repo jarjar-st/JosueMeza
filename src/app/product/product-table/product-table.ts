@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ProductService } from '../services/product';
 
 @Component({
   selector: 'app-product-table',
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './product-table.css'
 })
 export class ProductTable {
+  productService = inject(ProductService);
+  constructor() {
+    this.productService.getProducts();
+  }
 
 }
