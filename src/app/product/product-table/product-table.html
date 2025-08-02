@@ -1,8 +1,96 @@
+<div class="product-table">
+  <div class="table-header">
+    <input
+      type="text"
+      placeholder="Buscar..."
+      [value]="search()"
+      (input)="onSearch($event)"
+    />
+    <button (click)="openAddForm()">Agregar</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre</th>
+          <th>
+            Descripción
+            <span title="Más info">!</span>
+          </th>
+          <th>
+            Fecha de liberación
+            <span title="Más info">!</span>
+          </th>
+          <th>
+            Fecha de reestructuración
+            <span title="Más info">!</span>
+          </th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for ( product of paginatedProducts(); track product.id ) {
+        <tr>
+          <td>
+            @defer () {
+            <img [src]="product.logo" class="circle-img" alt="Logo" />
 
-
-@for ( product of productService.products(); track product.id ) {
-  <tr>
-    <td>{{ product.id }}</td>
-    <td>{{ product.name }}</td>
-  </tr>
-}
+            } @placeholder {
+            <div class="circle-img">
+              <span class="placeholder-text">Cargando...</span>
+            </div>
+            }
+          </td>
+          <td>{{ product.name }}</td>
+          <td>
+            {{ product.description }}
+          </td>
+          <td>
+            {{ product.date_release | date : "shortDate" }}
+          </td>
+          <td>
+            {{ product.date_revision | date : "shortDate" }}
+          </td>
+          <td>
+            <button (click)="openMenu(product)">⋮</button>
+            @if (menuOpen() === product.id) {
+            <div class="menu">
+              <button (click)="editProduct(product)">Editar</button>
+              <button (click)="deleteProduct(product)">Eliminar</button>
+              <button (click)="closeMenu()">Cerrar</button>
+            </div>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+      <tfoot>
+        <tr class="table-footer-row">
+          <td colspan="6">
+            <div class="table-footer-content">
+              <div class="footer-left">Resultados: {{ totalResults() }}</div>
+              <div class="footer-center">
+                @for (item of [].constructor(totalPages()); track $index) {
+                <button
+                  [class.active]="pageIndex() === $index"
+                  (click)="goToPage($index)"
+                >
+                  {{ $index + 1 }}
+                </button>
+                }
+              </div>
+              <div class="footer-right">
+                <select [value]="pageSize()" (change)="changePageSize($event)">
+                  <option [value]="5">5</option>
+                  <option [value]="10">10</option>
+                  <option [value]="20">20</option>
+                </select>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
