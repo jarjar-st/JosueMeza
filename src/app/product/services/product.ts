@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ProductInterface } from '../interfaces/product.interface';
+import { ApiResponse, ProductInterface } from '../interfaces/product.interface';
 import { HttpClient } from '@angular/common/http';
 import { catchError, finalize, of } from 'rxjs';
 
@@ -8,9 +8,10 @@ import { catchError, finalize, of } from 'rxjs';
 })
 export class ProductService {
   private readonly apiUrl = '/bp/products';
-  readonly products = signal<ProductInterface[]>([]);
-  readonly loading = signal<boolean>(false);
-  readonly idExists = signal<boolean>(false);
+   products = signal<ProductInterface[]>([]);
+   loading = signal<boolean>(false);
+   idExists = signal<boolean>(false);
+   successMessage = signal<string | null>(null);
   private http = inject(HttpClient);
 
   constructor() { }
@@ -44,24 +45,35 @@ export class ProductService {
   // Metodo para agregar un nuevo producto
   addProduct(product: ProductInterface){
     this.loading.set(true);
-    return this.http.post<ProductInterface>(this.apiUrl, product).pipe(
+    return this.http.post<ApiResponse<ProductInterface>>(this.apiUrl, product).pipe(
       catchError((error) => {
+        this.successMessage.set("Error al agregar el producto");
+        this.loading.set(false);
         console.log("Error al agregar el producto:", error);
         return of(null);
       }),
-      finalize(() => this.loading.set(false))
+      finalize(() => {
+        this.successMessage.set("Producto agregado exitosamente");
+        this.loading.set(false);
+      })
     );
   }
 
   // Metodo para editar un producto existente
   editProduct(product: ProductInterface) {
     this.loading.set(true);
-    return this.http.put(`/bp/products/${product.id}`, product).pipe(
+    return this.http.put<ApiResponse<ProductInterface>>(`/bp/products/${product.id}`, product).pipe(
       catchError((error) => {
+        this.successMessage.set("Error al editar el producto");
+        this.loading.set(false);
         console.log("Error al editar el producto:", error);
         return of(null);
       }),
-      finalize(() => this.loading.set(false))
+      finalize(() => {
+        this.successMessage.set("Producto editado exitosamente");
+        console.log("Producto editado exitosamente:", this.successMessage());
+        this.loading.set(false)
+      })
     );
   }
 

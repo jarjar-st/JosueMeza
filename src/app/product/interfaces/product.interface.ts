@@ -6,3 +6,8 @@ export interface ProductInterface {
   date_release: Date;
   date_revision: Date;
 }
+
+export interface ApiResponse<T> {
+  message: string;
+  data: T;
+}

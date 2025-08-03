@@ -55,7 +55,7 @@ export class ProductForm implements OnChanges {
 
   // isEdit = computed(() => this.product);
 
-  protected validateForm() {
+   validateForm() {
 
     const errors: { [key: string]: string } = {};
 
@@ -117,7 +117,7 @@ export class ProductForm implements OnChanges {
 
   }
 
-  protected fillDateRelease(event: Event | null) {
+   fillDateRelease(event: Event | null) {
     const input = event?.target as HTMLInputElement;
     const releaseDate = new Date(input.value);
     this.date_release.set(releaseDate);
@@ -131,7 +131,7 @@ export class ProductForm implements OnChanges {
 
 
   // Verificar si el ID ya existe
-  protected checkId() {
+   checkId() {
     if (!this.id() || this.id().length < 3) return;
     this.productService.idExistsVerification(this.id()).subscribe(exists => {
       this.idExists.set(exists);
@@ -174,6 +174,8 @@ export class ProductForm implements OnChanges {
     };
     this.submit.emit(product);
     this.resetForm();
+
+    
   }
 
   // Cerrar el formulario
