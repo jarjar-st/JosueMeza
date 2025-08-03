@@ -94,3 +94,10 @@
     </table>
   </div>
 </div>
+
+<app-product-form
+  [open]="formOpen()"
+  [product]="editProductData()"
+  (close)="closeForm()"
+  (submit)="onFormSubmit($event)">
+</app-product-form>

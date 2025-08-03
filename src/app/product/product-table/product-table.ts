@@ -2,20 +2,23 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ProductService } from '../services/product';
 import { DatePipe } from '@angular/common';
 import { ProductInterface } from '../interfaces/product.interface';
+import { ProductForm } from '../product-form/product-form';
 
 @Component({
   selector: 'app-product-table',
-  imports: [DatePipe],
+  imports: [DatePipe, ProductForm],
   templateUrl: './product-table.html',
   styleUrl: './product-table.css'
 })
 export class ProductTable {
-[x: string]: any;
+  [x: string]: any;
   productService = inject(ProductService);
   search = signal<string>("");
   pageIndex = signal<number>(0);
   pageSize = signal<number>(10);
   menuOpen = signal<string | null>(null);
+  formOpen = signal(false);
+  editProductData = signal<ProductInterface | null>(null);
   constructor() {
     this.productService.getProducts();
   }
@@ -78,7 +81,9 @@ export class ProductTable {
 
   // Acciones, editar y eliminar productos
   editProduct(product: ProductInterface) {
-    console.log("Editar producto:", product.name);
+    this.editProductData.set(product);
+    console.log("Producto seleccionado para editar:", product.name);
+    this.formOpen.set(true);
     this.closeMenu();
   }
 
@@ -87,8 +92,30 @@ export class ProductTable {
     this.closeMenu();
   }
 
+  // Abrir el formulario para agregar un nuevo producto
   openAddForm() {
-    console.log("Abrir formulario para agregar un nuevo producto");
+    this.editProductData.set(null);
+    this.formOpen.set(true);
+  }
+
+  closeForm() {
+    this.formOpen.set(false);
+    this.editProductData.set(null);
+  }
+
+  onFormSubmit(product: ProductInterface) {
+    if (this.editProductData()) {
+      this.productService.editProduct(product).subscribe(() => {
+        this.productService.getProducts();
+        this.closeForm();
+      });
+    } else {
+      console.log("Agregando nuevo producto:", product.name);
+      this.productService.addProduct(product).subscribe(() => {
+        this.productService.getProducts();
+        this.closeForm();
+      });
+    }
   }
 
 }

@@ -1,0 +1,154 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 900px;
+  width: 95vw;
+  margin: 0 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+input,
+textarea {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.95rem;
+  margin-top: 0.2rem;
+}
+
+
+
+button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+button[type="button"]:not(:last-child) {
+  background: #e0e0e0;
+  color: #333;
+}
+
+button[type="button"]:not(:nth-child(2):hover) {
+  background: #1565c0;
+  color: white;
+
+}
+
+.form-actions button:nth-child(2):hover {
+  background: greenyellow;
+  color: white;
+}
+
+button:hover {
+  background: #1565c0;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-actions {
+  grid-column: 1/ span 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+
+@media (max-width: 700px) {
+  .grid-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .form-actions {
+    grid-column: 1;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 60vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    animation: modalFadeIn 0.3s;
+  }
+}
+
+@media (max-width: 500px) {
+  .modal {
+    padding: 1rem;
+    max-width: 98vw;
+  }
+}
