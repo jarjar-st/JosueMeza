@@ -16,15 +16,24 @@
           <th>Nombre</th>
           <th>
             Descripción
-            <span title="Más info">!</span>
+            <div class="tooltip" title="Más info">
+              !
+              <!-- <span class="tooltiptext">MAS INFO SOBRE EL CAMPO</span> -->
+            </div>
           </th>
           <th>
             Fecha de liberación
-            <span title="Más info">!</span>
+            <div class="tooltip" title="Más info">
+              !
+              <!-- <span class="tooltiptext">MAS INFO SOBRE EL CAMPO</span> -->
+            </div>
           </th>
           <th>
             Fecha de reestructuración
-            <span title="Más info">!</span>
+            <div class="tooltip" title="Más info">
+              !
+              <!-- <span class="tooltiptext">MAS INFO SOBRE EL CAMPO</span> -->
+            </div>
           </th>
           <th>Acciones</th>
         </tr>
@@ -99,5 +108,34 @@
   [open]="formOpen()"
   [product]="editProductData()"
   (close)="closeForm()"
-  (submit)="onFormSubmit($event)">
+  (submit)="onFormSubmit($event)"
+>
 </app-product-form>
+
+@if (deleteModalOpen()){
+<div class="modal-backdrop-delete" (click)="onDeleteBackdropClick($event)">
+  <div class="modal-delete">
+    <h3>
+      ¿Estás seguro de eliminar <b>{{ deleteProductData()?.name }}</b
+      >?
+    </h3>
+    <hr class="solid">
+    <div class="modal-delete-actions">
+      <button
+        class="btn-cancel-delete"
+        type="button"
+        (click)="closeDeleteModal()"
+      >
+        Cancelar
+      </button>
+      <button
+        class="btn-confirm-delete"
+        type="button"
+        (click)="confirmDeleteProduct()"
+      >
+        Confirmar
+      </button>
+    </div>
+  </div>
+</div>
+}

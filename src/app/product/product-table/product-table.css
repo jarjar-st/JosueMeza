@@ -3,14 +3,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    /* padding: 1rem; */
     background: #f5f5f5;
 }
+
 
 .table-container {
     margin-top: 1rem;
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background: #fff;
     width: 100%;
@@ -22,6 +23,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    margin-top: 1rem;
     width: 100%;
     max-width: 1200px;
 }
@@ -37,16 +39,16 @@
 }
 
 .table-header button {
-    flex: 0 0 auto;
-    background: #1976d2;
-    color: white;
+    background: #d2cf19;
+    color: rgb(26, 62, 104);
     border: none;
     border-radius: 4px;
-    padding: 0.5rem 1.2rem;
+    padding: 1rem 1.7rem;
     cursor: pointer;
     font-weight: 600;
     transition: background 0.2s;
 }
+
 
 .table-header button:hover {
     background: #1565c0;
@@ -90,8 +92,9 @@ th {
     font-size: 0.9rem;
 }
 
-span[title] {
-    margin-left: 4px;
+.tooltip {
+    position: relative;
+    display: inline-block;
     cursor: pointer;
     font-weight: bold;
     color: #1976d2;
@@ -129,6 +132,14 @@ tfoot {
     text-align: center;
 }
 
+.footer-center button.active {
+    background: #d2cf19;
+    color: white;
+    font-weight: bold;
+    border: 2px solid #94921a;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+}
+
 .footer-center button {
     margin-left: 8px;
 }
@@ -152,7 +163,7 @@ select {
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -162,8 +173,15 @@ select {
 }
 
 @keyframes fadeInMenu {
-    from { opacity: 0; transform: translateY(-10px);}
-    to { opacity: 1; transform: translateY(0);}
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .menu button {
@@ -191,6 +209,78 @@ td {
     position: relative;
 }
 
+
+.modal-backdrop-delete {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+
+
+.modal-delete {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 900px;
+    width: 95vw;
+    margin: 0 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    animation: modalFadeIn 0.3s;
+}
+
+.modal-delete h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.modal-delete .modal-delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-delete .btn-cancel-delete {
+    background: #ccccc5;
+    color: rgb(50, 83, 121);
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 1.7rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.modal-delete .btn-cancel-delete:hover {
+    background: #d32f2f;
+}
+
+.modal-delete .btn-confirm-delete {
+    background: #d2cf19;
+    color: rgb(50, 83, 121);
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 1.7rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.modal-delete .solid {
+    width: 100%;
+    border-top: 1px solid #eee;
+}
+
+
 @media (max-width: 900px) {
     .table-header {
         flex-direction: column;
@@ -198,7 +288,8 @@ td {
         gap: 0.5rem;
     }
 
-    .table-header input[type="text"], .table-header button {
+    .table-header input[type="text"],
+    .table-header button {
         width: 100%;
         margin-bottom: 0.5rem;
         max-width: 100%;
@@ -209,7 +300,9 @@ td {
         gap: 0.5rem;
     }
 
-    .footer-left, .footer-center, .footer-right {
+    .footer-left,
+    .footer-center,
+    .footer-right {
         text-align: left;
         width: 100%;
     }
@@ -219,7 +312,13 @@ td {
     .table-container {
         padding: 0.5rem;
     }
-    table, thead, tbody, th, td, tr {
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
         display: block;
         width: 100%;
     }
@@ -230,7 +329,7 @@ td {
 
     tr {
         margin-bottom: 1rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         background: #fff;
         border-radius: 8px;
         padding: 0.5rem;
@@ -267,12 +366,15 @@ td {
         height: 30px;
     }
 
-    td, th {
+    td,
+    th {
         padding: 0.5rem;
         font-size: 0.95rem;
     }
 
-    button, select, input[type="text"] {
+    button,
+    select,
+    input[type="text"] {
         font-size: 1rem;
         padding: 0.4rem;
     }

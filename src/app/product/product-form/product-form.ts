@@ -160,17 +160,7 @@ export class ProductForm implements OnChanges {
 
   // Enviar el formulario
   onSubmit() {
-    console.log("Enviando formulario...");
-    console.log("Datos del formulario:", {
-      id: this.id(),
-      name: this.name(),
-      description: this.description(),
-      logo: this.logo(),
-      date_release: this.date_release(),
-      date_revision: this.date_revision()
-    });
-    console.log("Validate:", this.validateForm());
-    console.log("ERROR: ", this.erros());
+
     if (!this.validateForm()) {
       return;
     }
@@ -182,7 +172,6 @@ export class ProductForm implements OnChanges {
       date_release: this.date_release(),
       date_revision: this.date_revision()
     };
-    console.log("Producto enviado:", product);
     this.submit.emit(product);
     this.resetForm();
   }

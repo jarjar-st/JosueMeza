@@ -11,14 +11,16 @@ import { ProductForm } from '../product-form/product-form';
   styleUrl: './product-table.css'
 })
 export class ProductTable {
-  [x: string]: any;
-  productService = inject(ProductService);
-  search = signal<string>("");
-  pageIndex = signal<number>(0);
-  pageSize = signal<number>(10);
-  menuOpen = signal<string | null>(null);
-  formOpen = signal(false);
-  editProductData = signal<ProductInterface | null>(null);
+  protected productService = inject(ProductService);
+  protected search = signal<string>("");
+  protected pageIndex = signal<number>(0);
+  protected pageSize = signal<number>(10);
+  protected menuOpen = signal<string | null>(null);
+  protected formOpen = signal(false);
+  protected editProductData = signal<ProductInterface | null>(null);
+  protected deleteModalOpen = signal(false);
+  protected deleteProductData = signal<ProductInterface | null>(null);
+
   constructor() {
     this.productService.getProducts();
   }
@@ -71,7 +73,6 @@ export class ProductTable {
       return;
     }
     this.menuOpen.set(product.id);
-    console.log("Menu abierto para el producto:", product.name);
   }
 
   closeMenu() {
@@ -82,14 +83,34 @@ export class ProductTable {
   // Acciones, editar y eliminar productos
   editProduct(product: ProductInterface) {
     this.editProductData.set(product);
-    console.log("Producto seleccionado para editar:", product.name);
     this.formOpen.set(true);
     this.closeMenu();
   }
 
   deleteProduct(product: ProductInterface) {
-    console.log("Producto eliminado:", product.name);
+    this.deleteProductData.set(product);
+    this.deleteModalOpen.set(true);
     this.closeMenu();
+  }
+
+  closeDeleteModal() {
+    this.deleteModalOpen.set(false);
+    this.deleteProductData.set(null);
+  }
+
+  confirmDeleteProduct() {
+    const product = this.deleteProductData();
+    if (!product) return;
+    this.productService.deleteProduct(product).subscribe(() => {
+      this.productService.getProducts();
+      this.closeDeleteModal();
+    });
+  }
+
+  onDeleteBackdropClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-backdrop-delete')) {
+      this.closeDeleteModal();
+    }
   }
 
   // Abrir el formulario para agregar un nuevo producto
@@ -110,12 +131,13 @@ export class ProductTable {
         this.closeForm();
       });
     } else {
-      console.log("Agregando nuevo producto:", product.name);
       this.productService.addProduct(product).subscribe(() => {
         this.productService.getProducts();
         this.closeForm();
       });
     }
   }
+
+
 
 }
