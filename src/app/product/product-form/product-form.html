@@ -1,4 +1,96 @@
-@if (open) {
+@if (!isModal) {
+<div style="margin: 2% 2%;">
+  <h2>{{ isEdit() ? "Editar Producto" : "Registrar Producto" }}</h2>
+  <form class="test" (submit)="onSubmit(); $event.preventDefault()">
+    <div class="grid-form">
+      <div class="form-group">
+        <label for="id">ID</label>
+        <input
+          type="text"
+          id="id"
+          [disabled]="isEdit()"
+          [value]="id()"
+          name="id"
+          required
+          (input)="fillId($event)"
+        />
+        @if (erros()["id"]) {
+        <div class="error">{{ erros()["id"] }}</div>
+        } @if (idChecked()) {
+        <div class="error">Verificando ID...</div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input
+          id="name"
+          type="text"
+          [value]="name()"
+          (input)="fillName($event)"
+        />
+        @if (erros()["name"]) {
+        <div class="error">{{ erros()["name"] }}</div>
+
+        }
+      </div>
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea
+          id="description"
+          [value]="description()"
+          (input)="fillDescription($event)"
+        ></textarea>
+        @if (erros()["description"]) {
+        <div class="error">{{ erros()["description"] }}</div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="logo">Logo (URL)</label>
+        <input
+          id="logo"
+          type="text"
+          [value]="logo()"
+          (input)="fillLogo($event)"
+        />
+        @if (erros()["logo"]) {
+        <div class="error">{{ erros()["logo"] }}</div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date_release">Fecha de liberación</label>
+        <input
+          id="date_release"
+          type="date"
+          [value]="date_release() ? (date_release() | date : 'yyyy-MM-dd') : ''"
+          (change)="fillDateRelease($event); fillDateRelease(null)"
+        />
+        @if (erros()["date_release"]) {
+        <div class="error">{{ erros()["date_release"] }}</div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date_revision">Fecha de revisión</label>
+        <input
+          id="date_revision"
+          type="date"
+          [value]="
+            date_revision() ? (date_revision() | date : 'yyyy-MM-dd') : ''
+          "
+          readonly
+        />
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="resetForm()">Reiniciar</button>
+        <button type="button" (click)="onSubmit()">
+          {{ isEdit() ? "Actualizar" : "Registrar" }}
+        </button>
+        <button type="button" (click)="onClose()">Cerrar</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+} @if (isModal && open) {
 <div class="modal-backdrop" (click)="onBackdropClick($event)">
   <div class="modal">
     <h2>{{ isEdit() ? "Editar Producto" : "Registrar Producto" }}</h2>

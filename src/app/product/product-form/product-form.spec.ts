@@ -97,6 +97,7 @@ describe('ProductForm Component', () => {
 
 
   it('debería emitir evento close al cerrar', () => {
+    component.isModal = true; // Asegúrate de que isModal sea true
     const closeSpy = spyOn(component.close, 'emit');
     component.onClose();
     expect(closeSpy).toHaveBeenCalled();
@@ -107,7 +108,7 @@ describe('ProductForm Component', () => {
     component.name.set('');
     component.description.set('');
     component.logo.set('');
-    component.date_release.set(new Date('2020-01-01')); // fecha pasada
+    component.date_release.set(new Date('2020-01-01'));
     component.date_revision.set(new Date('2023-01-01'));
 
     const result = component.validateForm();
@@ -120,7 +121,7 @@ describe('ProductForm Component', () => {
   });
 
   it('debería actualizar date_revision automáticamente al cambiar date_release', () => {
-    const newDate = new Date('2030-01-01T00:00:00Z'); // especificar en UTC
+    const newDate = new Date('2030-01-01T00:00:00Z');
     const fakeInputEvent = {
       target: { value: '2030-01-01' }
     } as unknown as Event;

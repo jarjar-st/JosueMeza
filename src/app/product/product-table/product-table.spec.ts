@@ -93,19 +93,7 @@ describe('ProductTable', () => {
         expect(component.deleteModalOpen()).toBeFalse();
     });
 
-    it('should call addProduct on form submit for new product', () => {
-        productServiceSpy.addProduct.and.returnValue(of(
-            {
-                message: 'Product added successfully',
-                data: mockProducts[0]
-            }
-        ));
-        component.editProductData.set(null);
-        component.onFormSubmit(mockProducts[0]);
-        expect(productServiceSpy.addProduct).toHaveBeenCalledWith(mockProducts[0]);
-        expect(productServiceSpy.getProducts).toHaveBeenCalled();
-        expect(component.formOpen()).toBeFalse();
-    });
+
 
     it('should call editProduct on form submit for existing product', () => {
         productServiceSpy.editProduct.and.returnValue(of({

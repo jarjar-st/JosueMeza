@@ -3,6 +3,7 @@ import { ProductService } from '../services/product';
 import { DatePipe } from '@angular/common';
 import { ProductInterface } from '../interfaces/product.interface';
 import { ProductForm } from '../product-form/product-form';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-table',
@@ -12,6 +13,7 @@ import { ProductForm } from '../product-form/product-form';
 })
 export class ProductTable {
   productService = inject(ProductService);
+  router = inject(Router);
   search = signal<string>("");
   pageIndex = signal<number>(0);
   pageSize = signal<number>(10);
@@ -133,15 +135,11 @@ export class ProductTable {
           this.closeForm();
         }
       });
-    } else {
-      this.productService.addProduct(product).subscribe(res => {
-        if (res) {
-          this.productService.getProducts();
-          alert(res.message);
-          this.closeForm();
-        }
-      });
     }
+  }
+
+  navigateToAddProduct() {
+    this.router.navigate(['/add-product']);
   }
 
 

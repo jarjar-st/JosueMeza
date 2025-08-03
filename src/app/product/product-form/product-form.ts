@@ -2,6 +2,7 @@ import { Component, computed, EventEmitter, inject, Input, OnChanges, Output, si
 import { ProductInterface } from '../interfaces/product.interface';
 import { ProductService } from '../services/product';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -11,10 +12,18 @@ import { DatePipe } from '@angular/common';
 })
 export class ProductForm implements OnChanges {
 
+  constructor() {
+    if (!this.isModal) {
+      this.resetForm();
+    }
+  }
+
   @Input() open: boolean = false;
   @Input() product: ProductInterface | null = null;
+  @Input() isModal: boolean = false;
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<ProductInterface>();
+  router = inject(Router);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['product']) {
@@ -55,7 +64,7 @@ export class ProductForm implements OnChanges {
 
   // isEdit = computed(() => this.product);
 
-   validateForm() {
+  validateForm() {
 
     const errors: { [key: string]: string } = {};
 
@@ -117,7 +126,7 @@ export class ProductForm implements OnChanges {
 
   }
 
-   fillDateRelease(event: Event | null) {
+  fillDateRelease(event: Event | null) {
     const input = event?.target as HTMLInputElement;
     const releaseDate = new Date(input.value);
     this.date_release.set(releaseDate);
@@ -131,7 +140,7 @@ export class ProductForm implements OnChanges {
 
 
   // Verificar si el ID ya existe
-   checkId() {
+  checkId() {
     if (!this.id() || this.id().length < 3) return;
     this.productService.idExistsVerification(this.id()).subscribe(exists => {
       this.idExists.set(exists);
@@ -172,25 +181,40 @@ export class ProductForm implements OnChanges {
       date_release: this.date_release(),
       date_revision: this.date_revision()
     };
+    if (!this.isModal) {
+      this.productService.addProduct(product).subscribe(res => {
+        if (res) {
+          this.productService.getProducts();
+          alert(res.message);
+          this.resetForm();
+          this.router.navigate(['/']);
+        }
+      });
+
+    }
     this.submit.emit(product);
     this.resetForm();
 
-    
+
   }
 
   // Cerrar el formulario
   onClose() {
-    this.resetForm();
-    this.close.emit();
+    if (this.isModal) {
+      this.resetForm();
+      this.close.emit();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
 
 
-//  Metodo para cerrar el modal al hacer click fuera
-onBackdropClick(event: MouseEvent) {
-  if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
-    this.onClose();
+  //  Metodo para cerrar el modal al hacer click fuera
+  onBackdropClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
+      this.onClose();
+    }
   }
-}
 
 }

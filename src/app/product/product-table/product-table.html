@@ -6,7 +6,7 @@
       [value]="search()"
       (input)="onSearch($event)"
     />
-    <button (click)="openAddForm()">Agregar</button>
+    <button (click)="navigateToAddProduct()">Agregar</button>
   </div>
   <div class="table-container">
     <table>
@@ -107,6 +107,7 @@
 <app-product-form
   [open]="formOpen()"
   [product]="editProductData()"
+  [isModal]="true"
   (close)="closeForm()"
   (submit)="onFormSubmit($event)"
 >
